@@ -31,12 +31,6 @@ go install github.com/wzyjerry/windranger
 - `!`: 标记主键。例如: `id!: string`
 - `?`: 标记可空。例如: `name?: string`
 
-### 额外说明
-
-- 禁止使用 common 作为表名（保留字）。
-- 任何不包含&table 的文件都被合并至 common 包，否则独立为表名+Nested 包。
-- enum 与 type 的查找策略：首先在同文件内查找，未找到则在 common 中查找。
-
 ### 最佳实践
 
 1. 使用单复数区分字段和数组

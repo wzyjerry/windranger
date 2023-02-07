@@ -51,12 +51,12 @@ type {{ protoPascal $structure.Name }} struct {
     {{- if $field.Type.Package }}
         {{- $field.Type.Package }}.
     {{- end }}
-    {{- $field.Type.Name }}
+    {{- $field.Type.Name }} `bson:"
     {{- if eq $field.Type.Kind 3 }}
-    {{- " `bson:\"_id\"`" }}
-    {{- else if ne $field.Type.Kind 0 }}
-    {{- " `bson:\",omitempty\"`" }}
-    {{- end }}
+    {{- "_id" }}
+    {{- else }}
+    {{- $field.Name }}
+    {{- end }},omitempty"`
 {{- end }}
 }
 {{ end }}

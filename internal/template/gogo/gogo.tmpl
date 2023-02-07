@@ -41,9 +41,9 @@ type {{ protoPascal $structure.Name }} struct {
     // {{ protoPascal $field.Name }} {{ $field.Comment }}
 {{- end }}
     {{ protoPascal $field.Name -}}
-    {{- if (eq $field.Type.Kind 1) }}
+    {{- if eq $field.Type.Kind 1 }}
         {{- " []" }}
-    {{- else if (eq $field.Type.Kind 2) }}
+    {{- else if eq $field.Type.Kind 2 }}
         {{- " *" }}
     {{- else }}
         {{- " " }}
@@ -52,6 +52,11 @@ type {{ protoPascal $structure.Name }} struct {
         {{- $field.Type.Package }}.
     {{- end }}
     {{- $field.Type.Name }}
+    {{- if eq $field.Type.Kind 3 }}
+    {{- " `bson:\"_id\"`" }}
+    {{- else if ne $field.Type.Kind 0 }}
+    {{- " `bson:\",omitempty\"`" }}
+    {{- end }}
 {{- end }}
 }
 {{ end }}

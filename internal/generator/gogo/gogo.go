@@ -29,7 +29,7 @@ type InfoGogo struct {
 func Generate(packages []*parser.Package, out string) error {
 	l := linker.NewLinker().AddPackages(packages).SetFieldFunc(util.ProtoPascal)
 	l.
-		AddTypemap("int", "int32", "").
+		AddTypemap("int", "int64", "").
 		AddTypemap("float", "double", "").
 		AddTypemap("bool", "bool", "").
 		AddTypemap("string", "string", "").
@@ -56,11 +56,11 @@ func Generate(packages []*parser.Package, out string) error {
 		})
 		// 准备生成信息
 		_, folder := path.Split(out)
-		info := &InfoGogo {
+		info := &InfoGogo{
 			PackageName: util.Camel(folder),
-			Imports: imports,
-			Enums : pack.Enums,
-			Structures: pack.Structures,
+			Imports:     imports,
+			Enums:       pack.Enums,
+			Structures:  pack.Structures,
 		}
 		// 准备生成目录
 		err := os.MkdirAll(out, os.ModePerm)

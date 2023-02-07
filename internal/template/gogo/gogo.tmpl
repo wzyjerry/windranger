@@ -42,7 +42,7 @@ type {{ protoPascal $structure.Name }} struct {
 {{- end }}
     {{ protoPascal $field.Name -}}
     {{- if eq $field.Type.Kind 1 }}
-        {{- " []" }}
+        {{- " []*" }}
     {{- else if eq $field.Type.Kind 2 }}
         {{- " *" }}
     {{- else }}

@@ -40,18 +40,7 @@ type {{ protoPascal $structure.Name }} struct {
 {{- if $field.Comment}}
     // {{ protoPascal $field.Name }} {{ $field.Comment }}
 {{- end }}
-    {{ protoPascal $field.Name -}}
-    {{- if eq $field.Type.Kind 1 }}
-        {{- " []*" }}
-    {{- else if eq $field.Type.Kind 2 }}
-        {{- " *" }}
-    {{- else }}
-        {{- " " }}
-    {{- end }}
-    {{- if $field.Type.Package }}
-        {{- $field.Type.Package }}.
-    {{- end }}
-    {{- $field.Type.Name }} `bson:"
+    {{ protoPascal $field.Name }} {{ goType $field.Type }} `bson:"
     {{- if eq $field.Type.Kind 3 }}
     {{- "_id" }}
     {{- else }}

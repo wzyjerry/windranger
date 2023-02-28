@@ -6,6 +6,7 @@ import (
 	"unicode"
 
 	"github.com/go-openapi/inflect"
+	"github.com/wzyjerry/windranger/internal/parser"
 )
 
 var (
@@ -21,6 +22,7 @@ var (
 		"plural":         Plural,
 		"add":            Add,
 		"getPackageName": GetPackageName,
+		"goType":         GoType,
 	}
 )
 
@@ -53,7 +55,6 @@ func ruleset() *inflect.Ruleset {
 //	Username => username
 //	FullName => full_name
 //	HTTPCode => http_code
-//
 func Snake(s string) string {
 	var (
 		j int
@@ -82,7 +83,6 @@ func Snake(s string) string {
 //	full_name  => fullName
 //	user_id    => userID
 //	full-admin => fullAdmin
-//
 func Camel(s string) string {
 	words := strings.FieldsFunc(s, isSeparator)
 	if len(words) == 1 {
@@ -97,7 +97,6 @@ func Camel(s string) string {
 //	full_name 	=> FullName
 //	user_id   	=> UserID
 //	full-admin	=> FullAdmin
-//
 func Pascal(s string) string {
 	words := strings.FieldsFunc(s, isSeparator)
 	return pascalWords(words)
@@ -125,7 +124,6 @@ func isSeparator(r rune) bool {
 //	full_name 	=> FullName
 //	user_id   	=> UserId
 //	full-admin	=> FullAdmin
-//
 func ProtoPascal(s string) string {
 	words := strings.FieldsFunc(s, isSeparator)
 	return protoPascalWords(words)
@@ -150,4 +148,35 @@ func Plural(name string) string {
 // GetPackageName 获取包名
 func GetPackageName(name string) string {
 	return Camel(name)
+}
+
+func withStar(full string, kind parser.Kind) bool {
+	if kind == parser.KindOptional {
+		return true
+	}
+	switch full {
+	case "string", "int64", "double", "bool", "time.Time", "primitive.ObjectID":
+		return false
+	}
+	if kind == parser.KindArray {
+		return true
+	}
+	return false
+}
+
+func GoType(in parser.Type) string {
+	full := in.Package
+	if full != "" {
+		full += "."
+	}
+	full += in.Name
+	var result string
+	if in.Kind == parser.KindArray {
+		result += "[]"
+	}
+	if withStar(full, in.Kind) {
+		result += "*"
+	}
+	result += full
+	return result
 }

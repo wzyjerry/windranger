@@ -155,13 +155,10 @@ func withStar(full string, kind parser.Kind) bool {
 		return true
 	}
 	switch full {
-	case "string", "int64", "double", "bool", "time.Time", "primitive.ObjectID":
+	case "string", "int64", "float64", "bool", "time.Time", "primitive.ObjectID":
 		return false
 	}
-	if kind == parser.KindArray {
-		return true
-	}
-	return false
+	return kind == parser.KindArray
 }
 
 func GoType(in parser.Type) string {

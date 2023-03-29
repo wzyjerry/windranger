@@ -30,7 +30,7 @@ func Generate(packages []*parser.Package, out string) error {
 	l := linker.NewLinker().AddPackages(packages).SetFieldFunc(util.ProtoPascal)
 	l.
 		AddTypemap("int", "int64", "").
-		AddTypemap("float", "double", "").
+		AddTypemap("float", "float64", "").
 		AddTypemap("bool", "bool", "").
 		AddTypemap("string", "string", "").
 		AddTypemap("datetime", "Time", "time").
